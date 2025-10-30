@@ -1,0 +1,3 @@
+- [x] Add /record_sale route in app.py (GET/POST, admin-only, save Penjualan)
+- [x] Add link/button to record_sale in templates/admin.html
+- [x] Test by running the app

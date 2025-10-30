@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesan {{ menu.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #81b29a;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #e76f51;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select, input, button {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #e76f51;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d84315;
+        }
+        a {
+            display: block;
+            margin-top: 20px;
+            color: #264653;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pesan {{ menu.name }}</h1>
+    <p>Harga: Rp {{ "{:,.0f}".format(menu.price) }}</p>
+    <form method="POST">
+        <label for="quantity">Jumlah Porsi:</label>
+        <input type="number" name="quantity" min="1" max="{{ menu.max_order }}" required>
+        <br>
+        <button type="submit">Pesan Sekarang</button>
+    </form>
+    <a href="{{ url_for('toko_detail', toko_id=menu.toko_id) }}">Kembali ke Menu Toko</a>
+</body>
+</html>

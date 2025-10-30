@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Toko - Tekneat Kantin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Daftar Toko</h1>
+        <a href="{{ url_for('index') }}" class="btn">Kembali ke Home</a>
+    </header>
+    <div class="container">
+        <div class="toko-grid">
+            {% for toko in toko_list %}
+                <div class="toko-item">
+                    <h3>{{ toko.nama }}</h3>
+                    {% if best_sellers[toko.id] %}
+                        <img src="{{ url_for('static', filename=best_sellers[toko.id]) }}" alt="{{ toko.nama }} Best-Seller" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+                        <p style="font-weight: bold; color: #007BFF;">Best Seller</p>
+                    {% else %}
+                        <div style="width: 100%; height: 150px; background: #ddd; border-radius: 10px; margin-bottom: 10px;"></div>
+                        <p>Tidak ada best-seller.</p>
+                    {% endif %}
+                    <a href="{{ url_for('toko_detail', toko_id=toko.id) }}" class="btn">Lihat Menu</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Tekneat Kantin</p>
+    </footer>
+</body>
+</html>

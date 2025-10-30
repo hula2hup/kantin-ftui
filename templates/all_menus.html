@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semua Menu - Kantin FTUI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Menu Best Seller</h1>
+        <a href="{{ url_for('index') }}" class="btn">Kembali ke Home</a>
+    </header>
+    <div class="container">
+        <div class="menu-grid">
+            {% for menu, toko in all_menus %}
+                <div class="menu-item">
+                    {% if menu.image_url %}
+                        <img src="{{ url_for('static', filename=menu.image_url) }}" alt="{{ menu.name }}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+                    {% else %}
+                        <div style="width: 100%; height: 150px; background: #ddd; border-radius: 10px; margin-bottom: 10px;"></div>
+                    {% endif %}
+                    <h3>{{ menu.name }}</h3>
+                    <span style="color: #ff9800; font-weight: bold; font-size: 14px;">Best Seller</span>
+                    <p class="price">Rp {{ "{:,.0f}".format(menu.price) }}</p>
+                    <p class="toko">Toko: {{ toko.nama }}</p>
+                    <a href="{{ url_for('toko_detail', toko_id=menu.toko_id) }}" class="btn">Lihat Toko</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Kantin FTUI</p>
+    </footer>
+</body>
+</html>

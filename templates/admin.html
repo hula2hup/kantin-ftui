@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Kantin FTUI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .menu-sub-item {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .menu-sub-item p {
+            margin: 0 0 10px 0;
+            font-weight: bold;
+        }
+        .edit-btn {
+            background-color: #ff9800;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .edit-btn:hover {
+            background-color: #f57c00;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <h1 class="kantin-title">ADMIN DASHBOARD</h1>
+            <h2 class="ftui-title">KANTIN FTUI</h2>
+            <div class="buttons">
+                {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('add_toko') }}" class="btn primary">Tambah Toko</a>
+                    <a href="{{ url_for('add_menu') }}" class="btn secondary">Tambah Menu</a>
+                    <a href="{{ url_for('record_sale') }}" class="btn secondary">Catat Penjualan</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}" class="btn secondary">Logout</a>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="admin-dashboard">
+            <h2>Selamat datang, {{ current_user.username }}!</h2>
+            <p>Statistik Sistem:</p>
+            <ul>
+                <li>Total Toko: {{ total_toko }}</li>
+                <li>Total Menu: {{ total_menus }}</li>
+                <li>Total Penjualan: {{ total_penjualan }}</li>
+            </ul>
+            <div class="menu-grid">
+                {% for toko in toko_list %}
+                <div class="menu-item">
+                    <h3>{{ toko.nama }}</h3>
+                    <p>Menu: {{ toko.menus|length }}</p>
+                    <a href="{{ url_for('toko_detail', toko_id=toko.id) }}" class="btn">Lihat Detail</a>
+                    <a href="{{ url_for('edit_toko', toko_id=toko.id) }}" class="btn">Edit Toko</a>
+                    {% for menu in menus[toko.id] %}
+                        <div class="menu-sub-item">
+                            <p>{{ menu.name }} - Rp {{ "{:,.0f}".format(menu.price) }}</p>
+                            <p>Total Pesanan: {{ menu.pesanan|sum(attribute='quantity') if menu.pesanan else 0 }} / {{ menu.max_order }} porsi</p>
+                            <a href="{{ url_for('edit_menu', menu_id=menu.id) }}" class="btn edit-btn">Edit Menu</a>
+                            <form method="POST" action="{{ url_for('delete_menu', menu_id=menu.id) }}" style="display: inline;" onsubmit="return confirm('Yakin hapus {{ menu.name }}?')">
+                                <button type="submit" class="btn delete-btn">Hapus Menu</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Kantin FTUI</p>
+    </footer>
+</body>
+</html>

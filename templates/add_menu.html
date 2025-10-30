@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambahkan Menu - Kantin FTUI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            background-color: #e8f5e8; /* Light green background */
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .form-container h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .form-container input,
+        .form-container select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .form-container input[type="file"] {
+            padding: 10px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background-color: #ff9800; /* Orange button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #f57c00;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background-color: #545b62;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Tambahkan Menu Baru</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="name">Nama Menu:</label>
+            <input type="text" name="name" placeholder="Masukkan nama menu" required>
+            <label for="price">Harga:</label>
+            <input type="number" name="price" placeholder="Masukkan harga" required>
+            <label for="toko_id">Pilih Toko:</label>
+            <select name="toko_id" required>
+                {% for toko in toko_list %}
+                    <option value="{{ toko.id }}">{{ toko.nama }}</option>
+                {% endfor %}
+            </select>
+            <label for="image">Unggah Gambar:</label>
+            <input type="file" name="image" accept="image/*">
+            <button type="submit">Tambah Menu</button>
+        </form>
+        <a href="{{ url_for('admin') }}" class="back-btn">Kembali</a>
+    </div>
+    <footer>
+        <p>&copy; 2025 Kantin FTUI</p>
+    </footer>
+</body>
+</html>

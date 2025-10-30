@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kantin FTUI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <h1 class="kantin-title">KANTIN</h1>
+            <h2 class="ftui-title">FTUI</h2>
+            <div class="buttons">
+                <a href="{{ url_for('all_menus') }}" class="btn primary">Browser Toko</a>
+                <a href="{{ url_for('login') }}" class="btn secondary">Admin</a>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 Kantin FTUI</p>
+    </footer>
+</body>
+</html>

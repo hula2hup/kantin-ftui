@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ toko.nama }} - Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .edit-btn {
+            display: inline-block;
+            background-color: #ff9800;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .edit-btn:hover {
+            background-color: #f57c00;
+        }
+        .menu-item img {
+            width: 100px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto;
+            display: block;
+        }
+        .placeholder-img {
+            width: 100px;
+            height: 100px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Menu di {{ toko.nama }}</h1>
+        <a href="{{ url_for('index') }}" class="btn">Kembali ke Home</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('admin') }}" class="btn">Admin Dashboard</a>
+        {% endif %}
+    </header>
+    <div class="container">
+        {% if menus %}
+            <div class="menu-grid">
+                {% for menu in menus %}
+                    <div class="menu-item">
+                        {% if menu.image_url %}
+                            <img src="{{ url_for('static', filename=menu.image_url) }}" alt="{{ menu.name }}">
+                        {% else %}
+                            <div class="placeholder-img"></div>
+                        {% endif %}
+                        <h3>{{ menu.name }}</h3>
+                        {% if menu == best_menu %}
+                            <span style="background-color: #ff9800; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 5px;">Best Seller</span>
+                        {% endif %}
+                        <p>Harga: Rp {{ "{:,.0f}".format(menu.price) }}</p>
+                        {% if menu.in_stock %}
+                            <span style="color: green; font-weight: bold;">Tersedia</span>
+                            <form method="POST" action="{{ url_for('order', menu_id=menu.id) }}" style="display: inline; margin: 10px;">
+                                <input type="number" name="quantity" placeholder="Jumlah" min="1" max="{{ menu.max_order }}" required style="width: 60px; padding: 5px;">
+                                <button type="submit" class="btn">Pesan</button>
+                            </form>
+                            <p style="font-size: 12px; color: #666;">Maksimal {{ menu.max_order }} porsi per menu</p>
+                        {% else %}
+                            <span style="color: red; font-weight: bold;">Habis</span>
+                        {% endif %}
+                        {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                            <a href="{{ url_for('edit_menu', menu_id=menu.id) }}" class="edit-btn">Edit Menu</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h2 style="text-align: center; color: #666; margin-top: 50px;">Belum ada menu untuk toko ini.</h2>
+        {% endif %}
+    </div>
+    <footer>
+        <p>&copy; 2025 Kantin FTUI</p>
+    </footer>
+</body>
+</html>
