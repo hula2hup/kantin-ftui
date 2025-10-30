@@ -134,7 +134,7 @@ h1, h2 {
 
 .menu-grid {
     display: grid;
-    grid-template-columns: 1fr; /* Single column on mobile for menus */
+    grid-template-columns: 1fr; /* Always single column for vertical list */
     gap: 15px;
     margin-top: 20px;
 }
@@ -224,10 +224,7 @@ footer {
         padding: 20px;
     }
     
-    .menu-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-    }
+    /* Keep single column for menu-grid on desktop as well */
     
     .toko-grid {
         grid-template-columns: repeat(4, 1fr);

@@ -90,11 +90,13 @@
                     <option value="{{ toko.id }}">{{ toko.nama }}</option>
                 {% endfor %}
             </select>
+            <label for="stock">Stok:</label>
+            <input type="number" name="stock" placeholder="Masukkan stok" required>
             <label for="image">Unggah Gambar:</label>
             <input type="file" name="image" accept="image/*">
             <button type="submit">Tambah Menu</button>
         </form>
-        <a href="{{ url_for('admin') }}" class="back-btn">Kembali</a>
+        <a href="javascript:history.back()" class="back-btn">Kembali</a>
     </div>
     <footer>
         <p>&copy; 2025 Kantin FTUI</p>

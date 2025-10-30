@@ -79,6 +79,7 @@
                         <div class="menu-sub-item">
                             <p>{{ menu.name }} - Rp {{ "{:,.0f}".format(menu.price) }}</p>
                             <p>Total Pesanan: {{ menu.pesanan|sum(attribute='quantity') if menu.pesanan else 0 }} / {{ menu.max_order }} porsi</p>
+                            <p>Stok: {{ menu.stock }} porsi</p>
                             <a href="{{ url_for('edit_menu', menu_id=menu.id) }}" class="btn edit-btn">Edit Menu</a>
                             <form method="POST" action="{{ url_for('delete_menu', menu_id=menu.id) }}" style="display: inline;" onsubmit="return confirm('Yakin hapus {{ menu.name }}?')">
                                 <button type="submit" class="btn delete-btn">Hapus Menu</button>

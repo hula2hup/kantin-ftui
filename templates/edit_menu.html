@@ -91,11 +91,13 @@
             <label for="in_stock">
                 <input type="checkbox" name="in_stock" {% if menu.in_stock %}checked{% endif %}> Tersedia
             </label>
+            <label for="stock">Stok:</label>
+            <input type="number" name="stock" value="{{ menu.stock }}" placeholder="Masukkan stok" required>
             <label for="image">Unggah Gambar Baru (opsional):</label>
             <input type="file" name="image" accept="image/*">
             <button type="submit">Simpan Perubahan</button>
         </form>
-        <a href="{{ url_for('admin') }}" class="back-btn">Kembali</a>
+        <a href="javascript:history.back()" class="back-btn">Kembali</a>
     </div>
     <footer>
         <p>&copy; 2025 Kantin FTUI</p>

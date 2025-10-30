@@ -37,6 +37,7 @@ class Menu(db.Model):
     image_url = db.Column(db.String(200), nullable=True)
     in_stock = db.Column(db.Boolean, default=True)
     max_order = db.Column(db.Integer, default=20)  # Batasan maksimal porsi per menu
+    stock = db.Column(db.Integer, default=100)  # Stok yang tersedia
     toko_id = db.Column(db.Integer, db.ForeignKey('toko.id'), nullable=False)
     toko = db.relationship('Toko', backref=db.backref('menus', lazy=True, cascade="all, delete-orphan"))
 
@@ -159,6 +160,7 @@ def add_menu():
         name = request.form['name']
         price = float(request.form['price'])
         in_stock = 'in_stock' in request.form
+        stock = int(request.form['stock'])
         toko_id = int(request.form['toko_id'])
         image = request.files.get('image')
         image_url = None
@@ -167,7 +169,7 @@ def add_menu():
             image_filename = image.filename
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
             image_url = f"images/{image_filename}"
-        new_menu = Menu(name=name, price=price, image_url=image_url, in_stock=in_stock, toko_id=toko_id)
+        new_menu = Menu(name=name, price=price, image_url=image_url, in_stock=in_stock, stock=stock, toko_id=toko_id)
         db.session.add(new_menu)
         db.session.commit()
         return redirect(url_for('admin'))
@@ -211,6 +213,7 @@ def edit_menu(menu_id):
         menu.name = request.form['name']
         menu.price = float(request.form['price'])
         menu.in_stock = 'in_stock' in request.form
+        menu.stock = int(request.form['stock'])
         image = request.files.get('image')
         if image:
             os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -250,8 +253,13 @@ def order(menu_id):
         if not menu.in_stock:
             flash('Menu ini sedang tidak tersedia.')
             return redirect(url_for('toko_detail', toko_id=menu.toko_id))
+        if quantity > menu.stock:
+            flash(f'Pesanan gagal! Stok tidak mencukupi. Stok tersedia: {menu.stock} porsi.')
+            return redirect(url_for('toko_detail', toko_id=menu.toko_id))
         new_order = Pesanan(toko_id=menu.toko_id, menu_id=menu_id, quantity=quantity)
         db.session.add(new_order)
+        # Kurangi stok
+        menu.stock -= quantity
         db.session.commit()
         flash(f'Pesanan {quantity} porsi {menu.name} berhasil dibuat!')
         return redirect(url_for('toko_detail', toko_id=menu.toko_id))
